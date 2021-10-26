@@ -40,24 +40,24 @@ public class RabbitQueueServiceImpl implements RabbitQueueService {
 
     @Override
     public void addQueueToListener(String listenerId, String queueName) {
-        log.info("adding queue : " + queueName + " to listener with id : " + listenerId);
+//        log.info("adding queue : {} to listener with id : {}", queueName, listenerId);
         if (!checkQueueExistOnListener(listenerId, queueName)) {
             this.getMessageListenerContainerById(listenerId).addQueueNames(queueName);
-            log.info("queue REGISTERED");
+            log.info("queue registered {}", queueName);
         } else {
-            log.info("given queue name : {} not exist on given listener id : {}" + listenerId, queueName, listenerId);
+            log.info("given queue name : {} not exist on given listener id : {}", queueName, listenerId);
         }
     }
 
     @Override
     public void removeQueueFromListener(String listenerId, String queueName) {
-        log.info("removing queue : " + queueName + " from listener : " + listenerId);
+        log.info("removing queue : {} from listener : {}", queueName, listenerId);
         if (checkQueueExistOnListener(listenerId, queueName)) {
             this.getMessageListenerContainerById(listenerId).removeQueueNames(queueName);
             log.info("deleting queue from rabbit management");
             this.rabbitAdmin.deleteQueue(queueName);
         } else {
-            log.info("given queue name : " + queueName + " not exist on given listener id : " + listenerId);
+            log.info("given queue name : {} not exist on given listener id : {}", queueName, listenerId);
         }
     }
 
@@ -67,11 +67,11 @@ public class RabbitQueueServiceImpl implements RabbitQueueService {
             log.info("checking queueName : " + queueName + " exist on listener id : " + listenerId);
             log.info("getting queueNames");
             String[] queueNames = this.getMessageListenerContainerById(listenerId).getQueueNames();
-            log.info("queueNames : " + String.join(",", queueName));
+            log.info("queueNames : {}" , String.join(",", queueName));
             if (queueNames != null) {
-                log.info("checking " + queueName + " exist on active queues");
+                log.info("checking {} exist on active queues", queueNames);
                 for (String name : queueNames) {
-                    log.info("name : " + name + " with checking name : " + queueName);
+                    log.info("name : {} with checking name : {}" , name, queueName);
                     if (name.equals(queueName)) {
                         log.info("queue name exist on listener, returning true");
                         return Boolean.TRUE;
@@ -90,7 +90,7 @@ public class RabbitQueueServiceImpl implements RabbitQueueService {
     }
 
     private AbstractMessageListenerContainer getMessageListenerContainerById(String listenerId) {
-        log.info("getting message listener container by id : " + listenerId);
+        log.info("getting message listener container by id : {}", listenerId);
 
         if (this.rabbitListenerEndpointRegistry.getListenerContainer(listenerId) == null) {
 

@@ -10,9 +10,9 @@ public class RabbitMqTestSetRunnerConsumerService {
 
     @RabbitListener(id = "test-set-runner-exchange",queues = {"test-set-runner-queue"},concurrency = "2")
     public void receiver(Long testSetId) {
-        log.info("received Message from rabbit : " + testSetId);
+        log.info("received Message from rabbit : {}", testSetId);
         try {
-            log.info("completed " + testSetId + " task");
+            log.info("completed {} task", testSetId);
         } catch (Exception e) {
             log.error("Error on running test set");
         }
