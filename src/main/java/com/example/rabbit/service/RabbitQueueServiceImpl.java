@@ -40,7 +40,7 @@ public class RabbitQueueServiceImpl implements RabbitQueueService {
 
     @Override
     public void addQueueToListener(String listenerId, String queueName) {
-//        log.info("adding queue : {} to listener with id : {}", queueName, listenerId);
+        log.info("adding queue : {} to listener with id : {}", queueName, listenerId);
         if (!checkQueueExistOnListener(listenerId, queueName)) {
             this.getMessageListenerContainerById(listenerId).addQueueNames(queueName);
             log.info("queue registered {}", queueName);
